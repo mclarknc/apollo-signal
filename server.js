@@ -1,13 +1,14 @@
 import express from 'express';
 import Schema from './data/schema';
 import Resolvers from './data/resolvers';
+import cors from 'cors';
 //import Mocks from './data/mocks';
 
 import { apolloExpress, graphiqlExpress } from 'apollo-server';
 import { makeExecutableSchema } from 'graphql-tools';
 import bodyParser from 'body-parser';
 
-const GRAPHQL_PORT = 8080;
+const GRAPHQL_PORT = 8008;
 
 const graphQLServer = express();
 
@@ -17,6 +18,8 @@ const executableSchema = makeExecutableSchema({
     allowUndefinedInResolve: false,
     printErrors: true,
 });
+
+graphQLServer.use(cors({origin: 'http://localhost:3000'}));
 
 graphQLServer.use('/graphql', bodyParser.json(), apolloExpress({
     schema: executableSchema,

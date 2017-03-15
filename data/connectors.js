@@ -1,12 +1,14 @@
 import Sequelize from 'sequelize';
 
 const logging = false;
+// fetch database login credentials from environment
 const DB_NAME = process.env.DB_NAME;
+const DB_HOST = process.env.DB_HOST;
 const USER_NAME = process.env.USER_NAME;
 const PASSWORD = process.env.PASSWORD;
 
 const db = new Sequelize(DB_NAME, USER_NAME, PASSWORD, {
-    host: 'localhost',
+    host: DB_HOST,
     dialect: 'postgres',
     logging: logging,
 });

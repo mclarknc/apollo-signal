@@ -57,6 +57,7 @@ type Query {
     devices(cursor: Int, limit: Int): [Device]
     hostnames: [Hostname]
     signals(hwaddr: String!, cursor: Int, limit: Int): [Device]
+    deviceCount: Int
 }
 
 schema {

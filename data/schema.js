@@ -87,6 +87,7 @@ type Query {
     hostnames: [Hostname]
     signals(hwaddr: String!, cursor: Int, limit: Int): [Device]
     deviceCount: Int
+<<<<<<< HEAD
 }
 
 type Mutation {
@@ -113,6 +114,8 @@ type Mutation {
 	wlanConnections: Int
 	wlanOpMode: WLanOpModeInput
     ): Device
+=======
+>>>>>>> 05278732c893a78cb731ddb85052ee1faf0852f0
 }
 
 schema {

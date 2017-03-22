@@ -8,7 +8,7 @@ import { apolloExpress, graphiqlExpress } from 'apollo-server';
 import { makeExecutableSchema } from 'graphql-tools';
 import bodyParser from 'body-parser';
 
-const GRAPHQL_PORT = 8080;
+const GRAPHQL_PORT = 8008;
 
 const graphQLServer = express();
 
@@ -26,7 +26,8 @@ const logger = function(req, res, next) {
 }
 
 //graphQLServer.use(logger);
-graphQLServer.use(cors());
+graphQLServer.use(cors({origin: 'http://localhost:3000'}));
+
 graphQLServer.use('/graphql', bodyParser.json(), apolloExpress({
     schema: executableSchema,
     context: {}

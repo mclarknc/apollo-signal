@@ -1,6 +1,7 @@
 import express from 'express';
 import Schema from './data/schema';
 import Resolvers from './data/resolvers';
+import cors from 'cors';
 //import Mocks from './data/mocks';
 
 import { apolloExpress, graphiqlExpress } from 'apollo-server';
@@ -18,6 +19,14 @@ const executableSchema = makeExecutableSchema({
     printErrors: true,
 });
 
+const logger = function(req, res, next) {
+    console.log(req);
+    console.log('==================================================================');
+    next();
+}
+
+//graphQLServer.use(logger);
+graphQLServer.use(cors());
 graphQLServer.use('/graphql', bodyParser.json(), apolloExpress({
     schema: executableSchema,
     context: {}

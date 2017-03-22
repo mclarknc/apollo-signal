@@ -36,6 +36,26 @@ const resolvers = {
 				   }
 				  });
 	},
+	deviceCount(root, args) {
+	    return new Promise(function(resolve, reject) {
+		Device.findAll({
+		    attributes: ['stat_date'],
+		    order: 'stat_date DESC',
+		    limit: 1,
+		}).then(dev => {
+		    Device.count({
+			where: {
+			    'stat_date': dev[0].dataValues.stat_date
+			}
+		    }).then(result => {
+			resolve(result);
+		    })
+		});
+	    })
+	}
+    },
+    Mutation: {
+	addDevice(){}
     },
     Device: {
 	version(device) {

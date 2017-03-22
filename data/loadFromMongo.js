@@ -107,6 +107,12 @@ const WLanOpModeModel = db.define('wlanopmode', {
     },
 });
 
+const LatestModel = db.define('latest', {
+    latest: {
+	type: Sequelize.DATE
+    },
+});
+
 DeviceModel.belongsTo(VersionModel);
 DeviceModel.belongsTo(ProductModel);
 DeviceModel.belongsTo(NetModeModel);
@@ -168,7 +174,6 @@ const writeDevice = function(devDict) {
 	    device.update({ essidId: essid.id });
 	});
     };
-    
     DeviceModel.create({
 	hwaddr: devDict.hwaddr,
     	status: devDict.mcStatus,
@@ -187,6 +192,12 @@ const writeDevice = function(devDict) {
 	addRelations(device);
     });
     console.log('--> ' + devDict.hostname);
+};
+
+const writeLatest = function(latest) {
+    LatestModel.upsert({
+	latest: latest
+    });
 };
 
 var doMongo = function() {
@@ -218,17 +229,16 @@ var doMongo = function() {
 	    wlanConnections: Number,
 	    essid: String,
 	    wlanOpMode: String},
-					     {collection: 'AC'});
+	    {collection: 'AC'});
 
 	const AC = mongoose.model('AC', acSchema);
 
-	var count = 0;
+	var latest;
 	var cursor = AC.findOne({'stat_date': {'$gte': startDate, '$lt': endDate}}).cursor().eachAsync(function (doc) {
 	    writeDevice(doc);
-	    // count += 1;
-	    // if (count % 4000 === 0) {
-	    // 	sleep.sleep(10);
-	    // }
+	    latest = doc.stat_date
+	}).then(() => {
+	    writeLatest(latest);
 	});
     });
 };
